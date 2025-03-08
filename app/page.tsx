@@ -121,9 +121,6 @@ export default function Home() {
                 image="/dreamcanvas.png?height=300&width=400"
                 projectLink="https://github.com/0x00vb/DreamCanvas "
               />
-
-
-
             </div>
           </div>
         </section>
