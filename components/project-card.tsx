@@ -7,10 +7,11 @@ interface ProjectCardProps {
   title: string
   description: string
   tags: string[]
-  image: string
+  image: string,
+  projectLink: string
 }
 
-export default function ProjectCard({ title, description, tags, image }: ProjectCardProps) {
+export default function ProjectCard({ title, description, tags, image, projectLink }: ProjectCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-lg border bg-background transition-all hover:shadow-md">
       <div className="aspect-video overflow-hidden">
@@ -33,9 +34,10 @@ export default function ProjectCard({ title, description, tags, image }: Project
           ))}
         </div>
         <Link
-          href="#"
+          href={projectLink}
           className="absolute inset-0 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           aria-label={`View ${title} project`}
+          target="_blank"
         >
           <span className="sr-only">View project</span>
         </Link>

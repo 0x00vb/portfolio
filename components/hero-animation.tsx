@@ -129,7 +129,7 @@ export function HeroAnimation() {
         <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
           <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center">
             <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-              Alex
+              Valentino
             </div>
           </div>
         </div>
