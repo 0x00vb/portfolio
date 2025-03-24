@@ -291,8 +291,8 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="text-lg font-bold">Contact</h3>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>hello@alexdev.com</p>
-                <p>San Francisco, CA</p>
+                <p>valentinobalatti4@gmail.com</p>
+                <p>Buenos Aires, AR</p>
               </div>
             </div>
           </div>
