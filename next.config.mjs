@@ -16,6 +16,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Generate a fully static site during build. Useful for deploying to static hosting and avoiding serverless costs.
+  output: "export",
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,

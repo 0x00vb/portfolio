@@ -20,6 +20,7 @@ export default function ProjectCard({ title, description, tags, image, projectLi
           alt={title}
           width={400}
           height={300}
+          quality={60}
           className="h-full w-full object-cover transition-transform group-hover:scale-105"
         />
       </div>

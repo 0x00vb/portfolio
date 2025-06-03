@@ -3,7 +3,7 @@ import Image from "next/image"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ProjectCard from "@/components/project-card"
-import { HeroAnimation } from "@/components/hero-animation"
+import { HeroAnimationWrapper } from "@/components/hero-animation-wrapper"
 
 export default function Home() {
   return (
@@ -27,23 +27,40 @@ export default function Home() {
               Contact
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link href="https://github.com/0x00vb" target="_blank" passHref>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Github className="h-4 w-4" />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="group relative rounded-full border-2 transition-all duration-300 hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-primary/5 hover:to-primary/10"
+              >
+                <Github className="h-4 w-4 transition-all duration-300 group-hover:text-primary group-hover:scale-110" />
                 <span className="sr-only">GitHub</span>
+                <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
               </Button>
             </Link>
-            <Link href="https://linkedin.com/valentinobalatti" target="_blank" passHref>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Linkedin className="h-4 w-4" />
+            <Link href="https://linkedin.com/in/valentino-b-84992a1a6" target="_blank" passHref>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="group relative rounded-full border-2 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-blue-500/5 hover:to-blue-500/10"
+              >
+                <Linkedin className="h-4 w-4 transition-all duration-300 group-hover:text-blue-500 group-hover:scale-110" />
                 <span className="sr-only">LinkedIn</span>
+                <div className="absolute inset-0 rounded-full bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
               </Button>
             </Link>
-            <Button variant="outline" size="icon" className="rounded-full md:hidden">
-              <Mail className="h-4 w-4" />
-              <span className="sr-only">Contact</span>
-            </Button>
+            <Link href="#contact" className="md:hidden">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="group relative rounded-full border-2 transition-all duration-300 hover:border-green-500 hover:shadow-lg hover:shadow-green-500/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-green-500/5 hover:to-green-500/10"
+              >
+                <Mail className="h-4 w-4 transition-all duration-300 group-hover:text-green-500 group-hover:scale-110" />
+                <span className="sr-only">Contact</span>
+                <div className="absolute inset-0 rounded-full bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -71,7 +88,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 relative w-full h-[400px]">
-              <HeroAnimation />
+              <HeroAnimationWrapper />
             </div>
           </div>
         </section>

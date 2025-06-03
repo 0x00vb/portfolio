@@ -8,11 +8,8 @@ export function HeroAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    const canvasEl = canvasRef.current!
+    const ctx = canvasEl.getContext("2d")!
 
     let animationFrameId: number
     let particles: Particle[] = []
@@ -27,8 +24,8 @@ export function HeroAnimation() {
       color: string
 
       constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
+        this.x = Math.random() * canvasEl.width
+        this.y = Math.random() * canvasEl.height
         this.size = Math.random() * 5 + 1
         this.speedX = Math.random() * 3 - 1.5
         this.speedY = Math.random() * 3 - 1.5
@@ -39,11 +36,11 @@ export function HeroAnimation() {
         this.x += this.speedX
         this.y += this.speedY
 
-        if (this.x > canvas.width) this.x = 0
-        else if (this.x < 0) this.x = canvas.width
+        if (this.x > canvasEl.width) this.x = 0
+        else if (this.x < 0) this.x = canvasEl.width
 
-        if (this.y > canvas.height) this.y = 0
-        else if (this.y < 0) this.y = canvas.height
+        if (this.y > canvasEl.height) this.y = 0
+        else if (this.y < 0) this.y = canvasEl.height
       }
 
       draw() {
@@ -56,15 +53,16 @@ export function HeroAnimation() {
 
     // Set canvas dimensions
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+      canvasEl.width = canvasEl.offsetWidth
+      canvasEl.height = canvasEl.offsetHeight
       initParticles()
     }
 
     // Initialize particles
     function initParticles() {
       particles = []
-      const particleCount = Math.floor((canvas.width * canvas.height) / 8000)
+      // Reduce particle density to improve performance on low-end devices
+      const particleCount = Math.floor((canvasEl.width * canvasEl.height) / 12000)
 
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle())
@@ -73,7 +71,7 @@ export function HeroAnimation() {
 
     // Animation loop
     function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)
 
       // Draw connections
       ctx.strokeStyle = "rgba(120, 180, 255, 0.15)"
