@@ -90,35 +90,35 @@ export default function Home() {
                 title="MindDrive"
                 description="MindDrive is an AI-powered note-taking web application designed to help users capture, organize, and retrieve their thoughts efficiently."
                 tags={["Vite", "ExpressJS", "PostgreSQL", "Tailwind CSS"]}
-                image="/minddrive.png?height=300&width=400"
+                image="/minddrive.webp?height=300&width=400"
                 projectLink="https://minddrive.vercel.app "
               />
               <ProjectCard
                 title="Ski rental app"
                 description="Effortless Ski Rentals at Your Fingertips. Manage clients, products, and rentals with ease"
                 tags={["Java", "Desktop app", "Next.js", "React", "Tailwind CSS"]}
-                image="/skirental.png?height=300&width=400"
+                image="/skirental.webp?height=300&width=400"
                 projectLink="https://skirentalpro.vercel.app/"
               />
               <ProjectCard
                 title="E-commerce Platform"
                 description="A full-featured e-commerce platform with product listings, save for later and cart functionality."
                 tags={["React", "Node.js", "MongoDB", "ExpressJS"]}
-                image="/ecommerce.png?height=3--&width=300"
+                image="/ecommerce.webp?height=3--&width=300"
                 projectLink="https://ecommerce-rho-roan.vercel.app"
               />
               <ProjectCard
                 title="NewsTok"
                 description="An innovative, swipeable news application that brings you the latest headlines in a format inspired by TikTok's dynamic style."
                 tags={["Next.js", "Vite", "ExpressJS"]}
-                image="/newstok.png?height=300&width=400"
+                image="/newstok.webp?height=300&width=400"
                 projectLink="https://newstok.vercel.app "
               />
               <ProjectCard
                 title="DreamCanvas"
                 description="immersive wallpaper app that transforms your device into a canvas of dreams."
                 tags={["Mobile Development", "React Native"]}
-                image="/dreamcanvas.png?height=300&width=400"
+                image="/dreamcanvas.webp?height=300&width=400"
                 projectLink="https://github.com/0x00vb/DreamCanvas "
               />
             </div>
