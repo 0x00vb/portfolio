@@ -1,324 +1,502 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Download, Code, Palette, Zap, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import ProjectCard from "@/components/project-card"
-import { HeroAnimationWrapper } from "@/components/hero-animation-wrapper"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { motion, useScroll, useTransform, useInView } from "framer-motion"
+import { useRef, Suspense } from "react"
+import { EnhancedProjectCard } from "@/components/enhanced-project-card"
+import { ModernHeroSection } from "@/components/modern-hero-section"
+import { SkillsSection } from "@/components/skills-section"
+import { ContactForm } from "@/components/contact-form"
+import { ScrollProgress } from "@/components/scroll-progress"
+import { FloatingNav } from "@/components/floating-nav"
+
+// Animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }
+}
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.5, ease: "easeOut" }
+}
 
 export default function Home() {
+  const { scrollYProgress } = useScroll()
+  const heroRef = useRef(null)
+  const projectsRef = useRef(null)
+  const aboutRef = useRef(null)
+  const contactRef = useRef(null)
+  
+  const heroInView = useInView(heroRef, { once: true, margin: "-100px" })
+  const projectsInView = useInView(projectsRef, { once: true, margin: "-100px" })
+  const aboutInView = useInView(aboutRef, { once: true, margin: "-100px" })
+  const contactInView = useInView(contactRef, { once: true, margin: "-100px" })
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50])
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+
+  const projects = [
+    {
+      title: "MindDrive",
+      description: "AI-powered note-taking web application designed to help users capture, organize, and retrieve their thoughts efficiently with intelligent search and categorization.",
+      tags: ["Vite", "ExpressJS", "PostgreSQL", "Tailwind CSS", "AI/ML"],
+      image: "/minddrive.webp",
+      projectLink: "https://minddrive.vercel.app",
+      featured: true,
+      category: "Web App"
+    },
+    {
+      title: "Ski Rental Pro",
+      description: "Comprehensive ski rental management system with client management, inventory tracking, and seamless rental processing for ski shops.",
+      tags: ["Java", "Desktop App", "Next.js", "React", "Tailwind CSS"],
+      image: "/skirental.webp",
+      projectLink: "https://skirentalpro.vercel.app/",
+      featured: true,
+      category: "Desktop App"
+    },
+    {
+      title: "E-commerce Platform",
+      description: "Full-featured e-commerce solution with advanced product filtering, wishlist functionality, and optimized checkout experience.",
+      tags: ["React", "Node.js", "MongoDB", "ExpressJS", "Stripe"],
+      image: "/ecommerce.webp",
+      projectLink: "https://ecommerce-rho-roan.vercel.app",
+      featured: false,
+      category: "E-commerce"
+    },
+    {
+      title: "NewsTok",
+      description: "Revolutionary news consumption app with TikTok-style swipeable interface, bringing engaging news discovery to mobile users.",
+      tags: ["Next.js", "Vite", "ExpressJS", "News API"],
+      image: "/newstok.webp",
+      projectLink: "https://newstok.vercel.app",
+      featured: false,
+      category: "Mobile App"
+    },
+    {
+      title: "DreamCanvas",
+      description: "Immersive wallpaper application that transforms devices into personalized canvases with AI-generated and curated artwork.",
+      tags: ["React Native", "Mobile Development", "AI Art"],
+      image: "/dreamcanvas.webp",
+      projectLink: "https://github.com/0x00vb/DreamCanvas",
+      featured: false,
+      category: "Mobile App"
+    }
+  ]
+
+  const skills = [
+    { name: "Frontend Development", icon: Code, level: 95 },
+    { name: "UI/UX Design", icon: Palette, level: 88 },
+    { name: "Performance Optimization", icon: Zap, level: 92 },
+    { name: "Team Collaboration", icon: Users, level: 90 }
+  ]
+
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-5 ">
-        <div className=" flex h-16 items-center justify-between w-full">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <span>Valentino Balatti</span>
-          </Link>
-          <nav className="hidden md:flex gap-6">
-            <Link href="#" className="text-lg font-medium hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link href="#about" className="text-lg font-medium hover:text-primary transition-colors">
-              About
-            </Link>
-            <Link href="#projects" className="text-lg font-medium hover:text-primary transition-colors">
-              Projects
-            </Link>
-            <Link href="#contact" className="text-lg font-medium hover:text-primary transition-colors">
-              Contact
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href="https://github.com/0x00vb" target="_blank" passHref>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="group relative rounded-full border-2 transition-all duration-300 hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-primary/5 hover:to-primary/10"
-              >
-                <Github className="h-4 w-4 transition-all duration-300 group-hover:text-primary group-hover:scale-110" />
-                <span className="sr-only">GitHub</span>
-                <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
-              </Button>
-            </Link>
-            <Link href="https://linkedin.com/in/valentino-b-84992a1a6" target="_blank" passHref>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="group relative rounded-full border-2 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-blue-500/5 hover:to-blue-500/10"
-              >
-                <Linkedin className="h-4 w-4 transition-all duration-300 group-hover:text-blue-500 group-hover:scale-110" />
-                <span className="sr-only">LinkedIn</span>
-                <div className="absolute inset-0 rounded-full bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
-              </Button>
-            </Link>
-            <Link href="#contact" className="md:hidden">
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="group relative rounded-full border-2 transition-all duration-300 hover:border-green-500 hover:shadow-lg hover:shadow-green-500/25 hover:scale-110 bg-gradient-to-br from-background to-muted hover:from-green-500/5 hover:to-green-500/10"
-              >
-                <Mail className="h-4 w-4 transition-all duration-300 group-hover:text-green-500 group-hover:scale-110" />
-                <span className="sr-only">Contact</span>
-                <div className="absolute inset-0 rounded-full bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-      <main className="flex-1">
-        <section id="home" className="container py-12 md:py-24 lg:py-32 space-y-8">
-          <div className="flex flex-col lg:flex-row gap-8 items-center">
-            <div className="flex-1 space-y-6">
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                Software Engineer <span className="text-primary">& Web Developer</span>
-              </h1>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                I build exceptional digital experiences that are fast, accessible, and visually appealing. Specializing
-                in landing pages, web apps, and SaaS development.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href={"#projects"}>
-                  <Button size="lg" className="group">
-                    View My Work
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-                <Button size="lg" variant="outline">
-                  Download Resume
-                </Button>
-              </div>
-            </div>
-            <div className="flex-1 relative w-full h-[400px]">
-              <HeroAnimationWrapper />
-            </div>
-          </div>
-        </section>
-
-        <section id="projects" className="bg-muted py-12 md:py-24">
-          <div className="container space-y-12">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Featured Projects</h2>
-              <p className="text-muted-foreground md:text-xl max-w-[700px] mx-auto">
-                A selection of my recent work. These projects showcase my skills in web development, UI/UX design, and
-                problem-solving.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <ProjectCard
-                title="MindDrive"
-                description="MindDrive is an AI-powered note-taking web application designed to help users capture, organize, and retrieve their thoughts efficiently."
-                tags={["Vite", "ExpressJS", "PostgreSQL", "Tailwind CSS"]}
-                image="/minddrive.webp?height=300&width=400"
-                projectLink="https://minddrive.vercel.app "
-              />
-              <ProjectCard
-                title="Ski rental app"
-                description="Effortless Ski Rentals at Your Fingertips. Manage clients, products, and rentals with ease"
-                tags={["Java", "Desktop app", "Next.js", "React", "Tailwind CSS"]}
-                image="/skirental.webp?height=300&width=400"
-                projectLink="https://skirentalpro.vercel.app/"
-              />
-              <ProjectCard
-                title="E-commerce Platform"
-                description="A full-featured e-commerce platform with product listings, save for later and cart functionality."
-                tags={["React", "Node.js", "MongoDB", "ExpressJS"]}
-                image="/ecommerce.webp?height=3--&width=300"
-                projectLink="https://ecommerce-rho-roan.vercel.app"
-              />
-              <ProjectCard
-                title="NewsTok"
-                description="An innovative, swipeable news application that brings you the latest headlines in a format inspired by TikTok's dynamic style."
-                tags={["Next.js", "Vite", "ExpressJS"]}
-                image="/newstok.webp?height=300&width=400"
-                projectLink="https://newstok.vercel.app "
-              />
-              <ProjectCard
-                title="DreamCanvas"
-                description="immersive wallpaper app that transforms your device into a canvas of dreams."
-                tags={["Mobile Development", "React Native"]}
-                image="/dreamcanvas.webp?height=300&width=400"
-                projectLink="https://github.com/0x00vb/DreamCanvas "
-              />
-            </div>
-          </div>
-        </section>
-
-        <section id="about" className="container py-12 md:py-24 lg:py-32">
-          <div className="grid gap-10 lg:grid-cols-2 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">About Me</h2>
-              <p className="text-muted-foreground md:text-xl">
-                I'm a software engineering student passionate about creating beautiful, functional, and user-centered
-                digital experiences. With a focus on frontend development, I strive to write clean, efficient code that
-                solves real-world problems.
-              </p>
-              <p className="text-muted-foreground md:text-xl">
-                When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
-                or writing about tech on my blog.
-              </p>
-              <Button size="lg">
-                Learn More About Me
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <div className="relative aspect-square overflow-hidden rounded-xl">
-              <Image src="/placeholder.svg?height=600&width=600" alt="Profile photo" fill className="object-cover" />
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="container py-12 md:py-24 lg:py-32">
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Get In Touch</h2>
-              <p className="text-muted-foreground md:text-xl">
-                Have a project in mind or just want to say hello? Feel free to reach out. I'm always open to discussing
-                new projects, creative ideas, or opportunities to be part of your vision.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Mail className="h-4 w-4" />
-                  </Button>
-                  <span>valentinobalatti4@gmail.com</span>
+    <>
+      <ScrollProgress />
+      <FloatingNav />
+      
+      <div className="flex flex-col min-h-screen">
+        {/* Enhanced Header */}
+        <motion.header 
+          className="fixed top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className="container flex h-16 items-center justify-between">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground text-sm font-bold">
+                  VB
                 </div>
-                {/* <div className="flex items-center gap-3">
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Twitter className="h-4 w-4" />
-                  </Button>
-                  <span>@alexdev</span>
-                </div> */}
-              </div>
-            </div>
-            <div className="rounded-xl border bg-background p-6 shadow-sm">
-              <form className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Your email"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm font-medium">
-                    Subject
-                  </label>
-                  <input
-                    id="subject"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Subject"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Your message"
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Send Message
-                </Button>
-              </form>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer className="border-t bg-muted">
-        <div className="container py-8 md:py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold">ValentinoB</h3>
-              <p className="text-sm text-muted-foreground">
-                Building exceptional digital experiences for the modern web.
-              </p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Github className="h-4 w-4" />
-                  <span className="sr-only">GitHub</span>
-                </Button>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Twitter className="h-4 w-4" />
-                  <span className="sr-only">Twitter</span>
-                </Button>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Linkedin className="h-4 w-4" />
-                  <span className="sr-only">LinkedIn</span>
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold">Navigation</h3>
-              <nav className="flex flex-col gap-2">
-                <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Home
-                </Link>
-                <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  About
-                </Link>
-                <Link
-                  href="/projects"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                  Valentino Balatti
+                </span>
+              </Link>
+            </motion.div>
+            
+            <nav className="hidden md:flex gap-8">
+              {[
+                { href: "#home", label: "Home" },
+                { href: "#about", label: "About" },
+                { href: "#projects", label: "Projects" },
+                { href: "#contact", label: "Contact" }
+              ].map((item, index) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
                 >
-                  Projects
-                </Link>
-                <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Blog
-                </Link>
-                <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Contact
-                </Link>
-              </nav>
+                  <Link 
+                    href={item.href} 
+                    className="text-sm font-medium hover:text-primary transition-colors relative group"
+                  >
+                    {item.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+            
+            <div className="flex items-center gap-3">
+              {[
+                { href: "https://github.com/0x00vb", icon: Github, color: "primary" },
+                { href: "https://linkedin.com/in/valentino-b-84992a1a6", icon: Linkedin, color: "blue-500" },
+                { href: "#contact", icon: Mail, color: "green-500" }
+              ].map((social, index) => (
+                <motion.div
+                  key={social.href}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 + 0.5 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Link href={social.href} target={social.href.startsWith('http') ? '_blank' : undefined}>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="rounded-full border-2 transition-all duration-300 hover:shadow-lg hover:shadow-primary/25"
+                    >
+                      <social.icon className="h-4 w-4" />
+                      <span className="sr-only">{social.icon.name}</span>
+                    </Button>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold">Services</h3>
-              <nav className="flex flex-col gap-2">
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Web Development
-                </Link>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  UI/UX Design
-                </Link>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  SaaS Development
-                </Link>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Landing Pages
-                </Link>
-              </nav>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold">Contact</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p>valentinobalatti4@gmail.com</p>
-                <p>Buenos Aires, AR</p>
+          </div>
+        </motion.header>
+
+        <main className="flex-1 pt-16">
+          {/* Modern Hero Section */}
+          <section id="home" ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/30" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+            
+            <motion.div 
+              className="container relative z-10"
+              style={{ y, opacity }}
+            >
+              <ModernHeroSection />
+            </motion.div>
+          </section>
+
+          {/* Enhanced About Section */}
+          <motion.section 
+            id="about" 
+            ref={aboutRef}
+            className="py-24 lg:py-32 relative overflow-hidden"
+            initial="initial"
+            animate={aboutInView ? "animate" : "initial"}
+            variants={staggerContainer}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-muted/50 to-background" />
+            <div className="container relative z-10">
+              <motion.div 
+                className="text-center space-y-4 mb-16"
+                variants={fadeInUp}
+              >
+                <Badge variant="outline" className="mb-4">About Me</Badge>
+                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                  Crafting Digital
+                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"> Experiences</span>
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  I'm a passionate software engineering student who transforms ideas into beautiful, 
+                  functional digital experiences that users love.
+                </p>
+              </motion.div>
+
+              <div className="grid lg:grid-cols-2 gap-16 items-center">
+                <motion.div 
+                  className="space-y-8"
+                  variants={fadeInUp}
+                >
+                  <div className="prose prose-lg max-w-none">
+                    <p className="text-muted-foreground text-lg leading-relaxed">
+                      With a keen eye for design and a passion for clean, efficient code, I specialize in 
+                      creating web applications that not only look stunning but perform exceptionally. 
+                      My approach combines modern development practices with user-centered design principles.
+                    </p>
+                    <p className="text-muted-foreground text-lg leading-relaxed">
+                      When I'm not coding, you'll find me exploring emerging technologies, contributing to 
+                      open-source projects, or sharing knowledge with the developer community.
+                    </p>
+                  </div>
+                  
+                  <SkillsSection skills={skills} />
+                  
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button size="lg" className="group">
+                      <Download className="mr-2 h-4 w-4 transition-transform group-hover:translate-y-1" />
+                      Download Resume
+                    </Button>
+                  </motion.div>
+                </motion.div>
+
+                <motion.div 
+                  className="relative"
+                  variants={scaleIn}
+                >
+                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 p-8">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl" />
+                    <Image 
+                      src="/placeholder.svg" 
+                      alt="Valentino Balatti" 
+                      fill 
+                      className="object-cover rounded-xl"
+                      priority
+                    />
+                    <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-2xl blur-2xl -z-10" />
+                  </div>
+                </motion.div>
               </div>
             </div>
+          </motion.section>
+
+          {/* Enhanced Projects Section */}
+          <motion.section 
+            id="projects" 
+            ref={projectsRef}
+            className="py-24 lg:py-32 bg-muted/30"
+            initial="initial"
+            animate={projectsInView ? "animate" : "initial"}
+            variants={staggerContainer}
+          >
+            <div className="container">
+              <motion.div 
+                className="text-center space-y-4 mb-16"
+                variants={fadeInUp}
+              >
+                <Badge variant="outline" className="mb-4">Portfolio</Badge>
+                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                  Featured
+                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"> Projects</span>
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  A curated selection of my recent work, showcasing expertise in modern web development, 
+                  UI/UX design, and innovative problem-solving.
+                </p>
+              </motion.div>
+
+              {/* Featured Projects */}
+              <motion.div 
+                className="grid lg:grid-cols-2 gap-8 mb-16"
+                variants={staggerContainer}
+              >
+                {projects.filter(p => p.featured).map((project, index) => (
+                  <motion.div key={project.title} variants={fadeInUp}>
+                    <Suspense fallback={<div className="h-96 bg-muted rounded-xl animate-pulse" />}>
+                      <EnhancedProjectCard {...project} featured />
+                    </Suspense>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Other Projects */}
+              <motion.div 
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                variants={staggerContainer}
+              >
+                {projects.filter(p => !p.featured).map((project, index) => (
+                  <motion.div key={project.title} variants={fadeInUp}>
+                    <Suspense fallback={<div className="h-80 bg-muted rounded-xl animate-pulse" />}>
+                      <EnhancedProjectCard {...project} />
+                    </Suspense>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.section>
+
+          {/* Enhanced Contact Section */}
+          <motion.section 
+            id="contact" 
+            ref={contactRef}
+            className="py-24 lg:py-32 relative overflow-hidden"
+            initial="initial"
+            animate={contactInView ? "animate" : "initial"}
+            variants={staggerContainer}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-muted/50 to-background" />
+            <div className="container relative z-10">
+              <motion.div 
+                className="text-center space-y-4 mb-16"
+                variants={fadeInUp}
+              >
+                <Badge variant="outline" className="mb-4">Get In Touch</Badge>
+                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                  Let's Build Something
+                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"> Amazing</span>
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  Have a project in mind? I'm always excited to collaborate on innovative ideas 
+                  and bring creative visions to life.
+                </p>
+              </motion.div>
+
+              <div className="grid lg:grid-cols-2 gap-16 items-start">
+                <motion.div 
+                  className="space-y-8"
+                  variants={fadeInUp}
+                >
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold">Let's Connect</h3>
+                    <p className="text-muted-foreground text-lg">
+                      Whether you have a project in mind, want to discuss opportunities, 
+                      or just want to say hello, I'd love to hear from you.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {[
+                      { icon: Mail, label: "Email", value: "valentinobalatti4@gmail.com", href: "mailto:valentinobalatti4@gmail.com" },
+                      { icon: Github, label: "GitHub", value: "@0x00vb", href: "https://github.com/0x00vb" },
+                      { icon: Linkedin, label: "LinkedIn", value: "Valentino Balatti", href: "https://linkedin.com/in/valentino-b-84992a1a6" }
+                    ].map((contact, index) => (
+                      <motion.div
+                        key={contact.label}
+                        className="flex items-center gap-4 p-4 rounded-xl bg-background border hover:shadow-md transition-all duration-300 group cursor-pointer"
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => window.open(contact.href, '_blank')}
+                      >
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                          <contact.icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-medium">{contact.label}</p>
+                          <p className="text-sm text-muted-foreground">{contact.value}</p>
+                        </div>
+                        <ExternalLink className="h-4 w-4 text-muted-foreground ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                <motion.div variants={fadeInUp}>
+                  <ContactForm />
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>
+        </main>
+
+        {/* Enhanced Footer */}
+        <motion.footer 
+          className="border-t bg-muted/30 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <div className="container py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground text-sm font-bold">
+                    VB
+                  </div>
+                  <span className="font-bold text-lg">Valentino Balatti</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Crafting exceptional digital experiences for the modern web.
+                </p>
+                <div className="flex gap-2">
+                  {[
+                    { href: "https://github.com/0x00vb", icon: Github },
+                    { href: "https://linkedin.com/in/valentino-b-84992a1a6", icon: Linkedin },
+                    { href: "mailto:valentinobalatti4@gmail.com", icon: Mail }
+                  ].map((social) => (
+                    <motion.div
+                      key={social.href}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+                        <social.icon className="h-3 w-3" />
+                      </Button>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              
+              {[
+                {
+                  title: "Navigation",
+                  links: [
+                    { href: "#home", label: "Home" },
+                    { href: "#about", label: "About" },
+                    { href: "#projects", label: "Projects" },
+                    { href: "#contact", label: "Contact" }
+                  ]
+                },
+                {
+                  title: "Services",
+                  links: [
+                    { href: "#", label: "Web Development" },
+                    { href: "#", label: "UI/UX Design" },
+                    { href: "#", label: "SaaS Development" },
+                    { href: "#", label: "Consulting" }
+                  ]
+                },
+                {
+                  title: "Contact",
+                  links: [
+                    { href: "mailto:valentinobalatti4@gmail.com", label: "valentinobalatti4@gmail.com" },
+                    { href: "#", label: "Buenos Aires, AR" }
+                  ]
+                }
+              ].map((section) => (
+                <div key={section.title} className="space-y-4">
+                  <h3 className="font-semibold">{section.title}</h3>
+                  <nav className="flex flex-col gap-2">
+                    {section.links.map((link) => (
+                      <Link 
+                        key={link.label}
+                        href={link.href} 
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-8 pt-8 border-t text-center">
+              <p className="text-sm text-muted-foreground">
+                &copy; 2024 Valentino Balatti. All rights reserved.
+              </p>
+            </div>
           </div>
-          <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Valentino Balatti. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </motion.footer>
+      </div>
+    </>
   )
 }
 

@@ -6,6 +6,7 @@ interface TypingEffectProps {
   deletingSpeed?: number;
   delayBeforeDeleting?: number;
   delayBeforeRetyping?: number;
+  className?: string;
 }
 
 const TypingEffect: React.FC<TypingEffectProps> = ({
@@ -13,7 +14,8 @@ const TypingEffect: React.FC<TypingEffectProps> = ({
   typingSpeed = 150,
   deletingSpeed = 75,
   delayBeforeDeleting = 1500,
-  delayBeforeRetyping = 500
+  delayBeforeRetyping = 500,
+  className = "text-6xl font-bold text-black"
 }) => {
   // Current text being displayed
   const [currentText, setCurrentText] = useState("");
@@ -79,10 +81,10 @@ const TypingEffect: React.FC<TypingEffectProps> = ({
   ]);
 
   return (
-    <h1 className="text-6xl font-bold text-black">
+    <div className={className}>
       {currentText}
-      <span className="text-transparent bg-gray-200 ml-1 animate-pulse">_</span>
-    </h1>
+      <span className="text-primary/60 ml-1 animate-pulse">|</span>
+    </div>
   );
 };
 
