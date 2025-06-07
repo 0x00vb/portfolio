@@ -18,6 +18,10 @@ html {
   scroll-padding-top: 80px;
 }
 
+::selection {
+  background-color: rgba(161, 161, 161, 0.308)
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
