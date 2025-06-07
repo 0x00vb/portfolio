@@ -141,7 +141,7 @@ export function ModernHeroSection() {
             variants={itemVariants}
           >
             <TypingEffect 
-              text="Building exceptional digital experiences"
+              text="Build. Ship. Repeat."
               className="text-2xl md:text-3xl font-medium text-muted-foreground"
             />
           </motion.div>

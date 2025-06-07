@@ -235,9 +235,9 @@ export default function Home() {
                 >
                   <div className="prose prose-lg max-w-none">
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      With a keen eye for design and a passion for clean, efficient code, I specialize in 
-                      creating web applications that not only look stunning but perform exceptionally. 
-                      My approach combines modern development practices with user-centered design principles.
+                    Full-stack software engineer with a strong interest in AI and cybersecurity. I've been a daily Linux user for over 7 years, and I enjoy building tools, experimenting with code, and understanding how things work under the hood.
+
+I like creating things that are useful, clean, and actually work — whether it's a web app, a command-line tool, or an AI side project. Always learning, always hacking, and always curious.
                     </p>
                     <p className="text-muted-foreground text-lg leading-relaxed">
                       When I'm not coding, you'll find me exploring emerging technologies, contributing to 
