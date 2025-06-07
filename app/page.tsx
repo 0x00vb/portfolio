@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Download, Code, Palette, Zap, Users } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -10,10 +10,10 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import { useRef, Suspense } from "react"
 import { EnhancedProjectCard } from "@/components/enhanced-project-card"
 import { ModernHeroSection } from "@/components/modern-hero-section"
-import { SkillsSection } from "@/components/skills-section"
 import { ContactForm } from "@/components/contact-form"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { FloatingNav } from "@/components/floating-nav"
+import { AboutSection } from "@/components/about-section"
 
 // Animation variants
 const fadeInUp = {
@@ -40,12 +40,10 @@ export default function Home() {
   const { scrollYProgress } = useScroll()
   const heroRef = useRef(null)
   const projectsRef = useRef(null)
-  const aboutRef = useRef(null)
   const contactRef = useRef(null)
   
   const heroInView = useInView(heroRef, { once: true, margin: "-100px" })
   const projectsInView = useInView(projectsRef, { once: true, margin: "-100px" })
-  const aboutInView = useInView(aboutRef, { once: true, margin: "-100px" })
   const contactInView = useInView(contactRef, { once: true, margin: "-100px" })
 
   const y = useTransform(scrollYProgress, [0, 1], [0, -50])
@@ -97,13 +95,6 @@ export default function Home() {
       featured: false,
       category: "Mobile App"
     }
-  ]
-
-  const skills = [
-    { name: "Frontend Development", icon: Code, level: 95 },
-    { name: "UI/UX Design", icon: Palette, level: 88 },
-    { name: "Performance Optimization", icon: Zap, level: 92 },
-    { name: "Team Collaboration", icon: Users, level: 90 }
   ]
 
   return (
@@ -202,81 +193,8 @@ export default function Home() {
             </motion.div>
           </section>
 
-          {/* Enhanced About Section */}
-          <motion.section 
-            id="about" 
-            ref={aboutRef}
-            className="py-24 lg:py-32 relative overflow-hidden"
-            initial="initial"
-            animate={aboutInView ? "animate" : "initial"}
-            variants={staggerContainer}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-muted/50 to-background" />
-            <div className="container relative z-10">
-              <motion.div 
-                className="text-center space-y-4 mb-16"
-                variants={fadeInUp}
-              >
-                <Badge variant="outline" className="mb-4">About Me</Badge>
-                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  Crafting Digital
-                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"> Experiences</span>
-                </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                  I'm a passionate software engineering student who transforms ideas into beautiful, 
-                  functional digital experiences that users love.
-                </p>
-              </motion.div>
-
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
-                <motion.div 
-                  className="space-y-8"
-                  variants={fadeInUp}
-                >
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-muted-foreground text-lg leading-relaxed">
-                    Full-stack software engineer with a strong interest in AI and cybersecurity. I've been a daily Linux user for over 7 years, and I enjoy building tools, experimenting with code, and understanding how things work under the hood.
-
-I like creating things that are useful, clean, and actually work — whether it's a web app, a command-line tool, or an AI side project. Always learning, always hacking, and always curious.
-                    </p>
-                    <p className="text-muted-foreground text-lg leading-relaxed">
-                      When I'm not coding, you'll find me exploring emerging technologies, contributing to 
-                      open-source projects, or sharing knowledge with the developer community.
-                    </p>
-                  </div>
-                  
-                  <SkillsSection skills={skills} />
-                  
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button size="lg" className="group">
-                      <Download className="mr-2 h-4 w-4 transition-transform group-hover:translate-y-1" />
-                      Download Resume
-                    </Button>
-                  </motion.div>
-                </motion.div>
-
-                <motion.div 
-                  className="relative"
-                  variants={scaleIn}
-                >
-                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 p-8">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl" />
-                    <Image 
-                      src="/placeholder.svg" 
-                      alt="Valentino Balatti" 
-                      fill 
-                      className="object-cover rounded-xl"
-                      priority
-                    />
-                    <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-2xl blur-2xl -z-10" />
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </motion.section>
+          {/* Ultra-Clean About Section */}
+          <AboutSection />
 
           {/* Enhanced Projects Section */}
           <motion.section 
@@ -295,7 +213,7 @@ I like creating things that are useful, clean, and actually work — whether it'
                 <Badge variant="outline" className="mb-4">Portfolio</Badge>
                 <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
                   Featured
-                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"> Projects</span>
+                  <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-gray-400"> Projects</span>
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                   A curated selection of my recent work, showcasing expertise in modern web development, 
