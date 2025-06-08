@@ -30,12 +30,6 @@ const staggerContainer = {
   }
 }
 
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5, ease: "easeOut" }
-}
-
 export default function Home() {
   const { scrollYProgress } = useScroll()
   const heroRef = useRef(null)
@@ -56,6 +50,15 @@ export default function Home() {
       tags: ["Vite", "ExpressJS", "PostgreSQL", "Tailwind CSS", "AI/ML"],
       image: "/minddrive.webp",
       projectLink: "https://minddrive.vercel.app",
+      featured: true,
+      category: "Web App"
+    },
+        {
+      title: "CMflow",
+      description: "Automated content marketing tool that lets you manage multiple business accounts, describe each brand, and generate AI-powered posts. You can schedule posts with custom intervals or create and publish them manually.",
+      tags: ["Next.js", "Tailwind CSS", "TypeScript", "PostgreSQL"],
+      image: "/cmflow.webp",
+      projectLink: "https://cmflow.vercel.app/",
       featured: true,
       category: "Web App"
     },
